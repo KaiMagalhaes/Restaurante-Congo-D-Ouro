@@ -3,50 +3,40 @@ import { useNavigate } from "react-router-dom";
 
 export default function Cozinha() {
   const [pedidos, setPedidos] = useState([]);
-  const navigate = useNavigate();
+  const nav = useNavigate();
 
   useEffect(() => {
-    // PROTEÇÃO SIMPLES: Se não for "cozinha", expulsa para o login
     const role = localStorage.getItem("userRole");
     if (role !== "cozinha") {
-      alert("Acesso negado! Apenas para a equipa da cozinha.");
-      navigate("/login");
-      return;
+      alert("Acesso negado");
+      nav("/login");
     }
 
-    const atualizar = () => {
-      const dados = JSON.parse(localStorage.getItem("listaPedidos") || "[]");
-      setPedidos(dados);
-    };
-    atualizar();
-    window.addEventListener("storage", atualizar);
-    return () => window.removeEventListener("storage", atualizar);
-  }, [navigate]);
+    const dados = JSON.parse(localStorage.getItem("listaPedidos") || "[]");
+    setPedidos(dados);
+  }, []);
 
-  const mudarEstado = (id, novoEst) => {
-    const novaLista = pedidos.map(p => 
-      p.idPedido === id ? { ...p, estado: novoEst } : p
-    );
-    setPedidos(novaLista);
-    localStorage.setItem("listaPedidos", JSON.stringify(novaLista));
-  };
+  function mudar(id, st) {
+    const nova = pedidos.map(p => {
+      if (p.idPedido === id) return { ...p, estado: st };
+      return p;
+    });
+    setPedidos(nova);
+    localStorage.setItem("listaPedidos", JSON.stringify(nova));
+  }
 
   return (
-    <div className="container mt-4">
-      <h2 className="mb-4">Pedidos Pendentes</h2>
-      <div className="row">
-        {pedidos.map((p) => (
-          <div key={p.idPedido} className="col-md-4 mb-3">
-            <div className={`card shadow-sm border-2 ${p.estado === 'concluido' ? 'border-success' : 'border-warning'}`}>
-              <div className="card-body text-center">
-                <span className="badge bg-danger mb-2">MESA {p.mesa}</span>
-                <h4>{p.nome}</h4>
-                <p className="small text-muted">{p.hora} - {p.estado}</p>
-                <div className="d-flex justify-content-center gap-2">
-                  <button onClick={() => mudarEstado(p.idPedido, "em andamento")} className="btn btn-sm btn-info text-white">Preparar</button>
-                  <button onClick={() => mudarEstado(p.idPedido, "concluido")} className="btn btn-sm btn-success">Pronto</button>
-                </div>
-              </div>
+    <div className="cozinha-container">
+      <h1 className="titulo-pg">Pedidos da Cozinha</h1>
+      <div className="grid-pedidos">
+        {pedidos.map(p => (
+          <div key={p.idPedido} className="card-pedido">
+            <div className="info-mesa">Mesa: {p.mesa}</div>
+            <h3 className="prato-nome">{p.nome}</h3>
+            <p className="status-texto">Status: <span>{p.estado}</span></p>
+            <div className="botoes-acao">
+              <button onClick={() => mudar(p.idPedido, "fazendo")} className="btn-preparar">Fazer</button>
+              <button onClick={() => mudar(p.idPedido, "pronto")} className="btn-pronto">Pronto</button>
             </div>
           </div>
         ))}

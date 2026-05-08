@@ -1,43 +1,35 @@
-import { Outlet, Link, useNavigate } from "react-router-dom";
-import "./LayoutMaster.css";
+import { Link, useNavigate, Outlet } from "react-router-dom";
 
 export default function LayoutMaster() {
-  const navegar = useNavigate();
-  
+  const nav = useNavigate();
+  const cargo = localStorage.getItem("userRole");
 
-  const cargo = localStorage.getItem("tipo");
-
-  const sair = () => {
-    localStorage.clear();
-    navegar("/");
-    window.location.reload(); 
-  };
+  function sair() {
+    localStorage.removeItem("userRole");
+    nav("/login");
+  }
 
   return (
-    <>
-      <nav className="navbar navbar-expand-lg navbar-custom">
-        <div className="container-fluid">
-          <Link className="navbar-brand text-white" to="/">Congo D'Ouro</Link>
-          <div className="navbar-nav ms-auto">
-            <Link className="nav-link nav-link-custom" to="/">Cardápio</Link>
-            
-            {cargo === "admin" && (
-              <Link className="nav-link nav-link-custom" to="/gerente">Gerência</Link>
-            )}
+    <div className="layout-container">
+      <header className="topo">
+        <Link to="/" className="logo">Congo D'Ouro</Link>
+        <nav className="menu-links">
+          <Link to="/">Cardápio</Link>
+          
+          {cargo === "gerente" && <Link to="/gerente">Gestão</Link>}
+          {cargo === "cozinha" && <Link to="/cozinha">Cozinha</Link>}
 
-            {cargo === "chef" && (
-              <Link className="nav-link nav-link-custom" to="/cozinha">Cozinha</Link>
-            )}
+          {cargo ? (
+            <button onClick={sair} className="btn-sair">Sair</button>
+          ) : (
+            <Link to="/login" className="btn-login">Login</Link>
+          )}
+        </nav>
+      </header>
 
-            {cargo ? (
-              <button onClick={sair} className="btn btn-link nav-link-custom" style={{textDecoration: 'none'}}>Sair</button>
-            ) : (
-              <Link className="nav-link nav-link-custom" to="/login">Login</Link>
-            )}
-          </div>
-        </div>
-      </nav>
-      <main><Outlet /></main>
-    </>
+      <main className="conteudo">
+        <Outlet />
+      </main>
+    </div>
   );
 }

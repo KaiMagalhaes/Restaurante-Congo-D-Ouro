@@ -1,23 +1,23 @@
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import LayoutMaster from "./layouts/LayoutMaster";
-import Menu from "./pages/Menu";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import LayoutMaster from "./components/LayoutMaster";
 import Login from "./pages/Login";
-import Gerente from "./pages/Gerente"; 
-import Cozinha from "./pages/Cozinha"; 
+import Menu from "./pages/Menu";
+import Cozinha from "./pages/Cozinha";
+import Gerente from "./pages/Gerente";
 
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <LayoutMaster />,
-    children: [
-      { index: true, element: <Menu /> },
-      { path: "login", element: <Login /> },
-      { path: "gerente", element: <Gerente /> }, 
-      { path: "cozinha", element: <Cozinha /> }, 
-    ],
-  },
-]);
-
-export default function App() {
-  return <RouterProvider router={router} />;
+function App() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<LayoutMaster />}>
+          <Route index element={<Menu />} />
+          <Route path="login" element={<Login />} />
+          <Route path="cozinha" element={<Cozinha />} />
+          <Route path="gerente" element={<Gerente />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
+  );
 }
+
+export default App;
