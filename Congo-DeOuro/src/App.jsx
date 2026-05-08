@@ -1,6 +1,7 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import LayoutMaster from "./layouts/LayoutMaster";
 import Menu from "./pages/Menu";
+import Login from "./pages/Login";
 
 const router = createBrowserRouter([
   {
@@ -8,7 +9,7 @@ const router = createBrowserRouter([
     element: <LayoutMaster />,
     children: [
       { index: true, element: <Menu /> },
-      { path: "login", element: <div>Área do Funcionário</div> },
+      { path: "login", element: <Login /> },
     ],
   },
 ]);

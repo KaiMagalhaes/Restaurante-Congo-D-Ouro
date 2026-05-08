@@ -9,6 +9,7 @@
 
 .card-container:hover {
   transform: scale(1.02);
+  box-shadow: 10px black;
 }
 
 html{
