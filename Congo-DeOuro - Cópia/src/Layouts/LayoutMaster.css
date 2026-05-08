@@ -1,0 +1,21 @@
+.navbar-custom {
+  background-color: #1a1a1a;
+  padding: 20px;
+  border-bottom: 5px solid #f0ad4e;
+  text-align: center;
+}
+
+.nav-link-custom {
+  color: white !important;
+  text-decoration: none;
+  margin: 0 15px;
+  font-size: 18px;
+  padding: 5px 10px;
+  border: 1px solid transparent;
+}
+
+.nav-link-custom:hover {
+  background-color: #f0ad4e;
+  color: #1a1a1a !important;
+  border-radius: 5px;
+}
