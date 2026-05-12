@@ -1,7 +1,9 @@
 import { Link, useNavigate, Outlet } from "react-router-dom";
+import "./LayoutMaster.css";
 
 export default function LayoutMaster() {
   const nav = useNavigate();
+
   const cargo = localStorage.getItem("userRole");
 
   function sair() {
@@ -10,24 +12,31 @@ export default function LayoutMaster() {
   }
 
   return (
-    <div className="layout-container">
-      <header className="topo">
-        <Link to="/" className="logo">Congo D'Ouro</Link>
-        <nav className="menu-links">
+    <div className="layout-geral">
+      <nav className="barra-topo">
+        <Link to="/" className="marca">
+          Congo D'Ouro
+        </Link>
+
+        <div className="links">
           <Link to="/">Cardápio</Link>
-          
+
           {cargo === "gerente" && <Link to="/gerente">Gestão</Link>}
           {cargo === "cozinha" && <Link to="/cozinha">Cozinha</Link>}
 
           {cargo ? (
-            <button onClick={sair} className="btn-sair">Sair</button>
+            <button onClick={sair} className="btn-sair">
+              Sair
+            </button>
           ) : (
-            <Link to="/login" className="btn-login">Login</Link>
+            <Link to="/login" className="btn-entrar">
+              Login Staff
+            </Link>
           )}
-        </nav>
-      </header>
+        </div>
+      </nav>
 
-      <main className="conteudo">
+      <main className="corpo-pagina">
         <Outlet />
       </main>
     </div>

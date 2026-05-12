@@ -1,11 +1,11 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import LayoutMaster from "./components/LayoutMaster";
+import LayoutMaster from "./Layouts/LayoutMaster"; 
 import Login from "./pages/Login";
 import Menu from "./pages/Menu";
 import Cozinha from "./pages/Cozinha";
 import Gerente from "./pages/Gerente";
 
-function App() {
+export default function App() {
   return (
     <BrowserRouter>
       <Routes>
@@ -19,5 +19,3 @@ function App() {
     </BrowserRouter>
   );
 }
-
-export default App;
