@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import "./Menu.css";
 
 export default function Menu() {
+  // guardar a lista de pratos e o número da mesa digitado
   const [lista, setLista] = useState([]);
   const [nmrMesa, setNmrMesa] = useState("");
 
@@ -14,14 +15,20 @@ export default function Menu() {
     { id: 6, nmr: "5", foto: "/Img/cocada.png", tipo: "Sobremesa", desc: "Doce de coco tradicional e cremoso.", nome: "Cocada" }
   ];
 
+// ----------------------------PROCURAR OS PRATOS DO GERENTE P JUNTAR COM OS FIXOS----------------------
   useEffect(() => {
     const pratosGerente = JSON.parse(localStorage.getItem("listaPratos") || "[]");
     setLista([...pratosFixos, ...pratosGerente]);
   }, []);
 
   const pedir = (elemento) => {
-    if (!nmrMesa) return alert("Digite a mesa!");
+
+    // ---------------------coiso de ver se tem mesa------------------------
+    if (!nmrMesa) return alert("Digite a mesa");
+
     const dados = JSON.parse(localStorage.getItem("listaPedidos") || "[]");
+
+// -------------------------CRIACAO DO NOVO PEDIDO POR CONTA DO GERENTE----------------
     const novo = { 
       idPedido: Date.now(), 
       nome: elemento.nome, 
@@ -29,6 +36,8 @@ export default function Menu() {
       hora: new Date().toLocaleTimeString(), 
       estado: "pendente" 
     };
+
+  //  -------------------------pra guardar a lista----------------------
     localStorage.setItem("listaPedidos", JSON.stringify([...dados, novo]));
     alert(elemento.nome + " enviado para a mesa " + nmrMesa);
   };
@@ -36,6 +45,8 @@ export default function Menu() {
   return (
     <div className="menu-container">
       <h1 className="menu-titulo">Cardápio Congo D'Ouro</h1>
+      
+      {/* Zona de input para a mesa com ligação ao estado nmrMesa */}
       <div className="mesa-selecao">
         <input 
           type="number" 
@@ -45,6 +56,7 @@ export default function Menu() {
           onChange={(e) => setNmrMesa(e.target.value)} 
         />
       </div>
+{/* ----------------------------PRA FAZER CADA PRATO NA LISTA--------------- */}
       <div className="menu-grid">
         {lista.map((elemento) => (
           <div key={elemento.id} className="menu-card">
@@ -57,6 +69,8 @@ export default function Menu() {
               <p className="prato-desc">{elemento.desc}</p>
               <div className="menu-footer">
                 <span className="prato-preco">{elemento.nmr}€</span>
+{/* 
+-------------------------------------BOTAO PEDIR ------------------------------------- */}
                 <button onClick={() => pedir(elemento)} className="btn-pedir">Pedir</button>
               </div>
             </div>
